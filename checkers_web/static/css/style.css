@@ -1,0 +1,47 @@
+.board {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    width: 400px;
+    height: 400px;
+    border: 2px solid #333;
+}
+
+.square {
+    width: 50px;
+    height: 50px;
+}
+
+.red-square {
+    background-color: #D18B47;
+}
+
+.black-square {
+    background-color: #FFCE9E;
+}
+
+.piece {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin: 5px;
+    cursor: pointer;
+}
+
+.red-piece {
+    background-color: red;
+}
+
+.white-piece {
+    background-color: white;
+}
+
+.king::after {
+    content: '\2655'; /* Crown symbol */
+    font-size: 25px;
+    color: gold;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

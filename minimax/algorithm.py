@@ -1,8 +1,8 @@
 from copy import deepcopy
 import pygame
-from checkers.board import Board
-from checkers.piece import Piece
-from checkers.game import Game
+from checkers_game.board import Board
+from checkers_game.piece import Piece
+from checkers_game.game import Game
 from typing import List, Tuple, Optional
 
 RED = (255,0,0)

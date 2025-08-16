@@ -1,41 +1,8 @@
 import pygame
 import sys
-from checkers.constants import WIDTH, HEIGHT, SQUARE_SIZE, RED, WHITE
-from checkers.game import Game
-from minimax.algorithm import minimax
-from minimax.algorithm import alphabeta
-
-FPS = 60
-ALPHA = float('-inf')
-BETA = float('inf')
-DEPTH = 2
-
-WIN = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption('Checkers')
-
-# uncomment 36, comment 37 = minmax
-# comment 36, uncomment 37 = Alpha Beta
-# Line 93 in algorithm.py commented = no ai thinking shown
-#
-
-def get_row_col_from_mouse(pos):
-    x, y = pos
-    row = y // SQUARE_SIZE
-    col = x // SQUARE_SIZE
-    return row, col
-
-def main():
-
-    args = sys.argv[1:]
-
-    if not args or len(args) != 2 or not args[0].isnumeric() or not args[1].isnumeric():
-        print("usage: [main.py] [depth] [1 for AB 0 for MM]")
-        sys.exit(1)
-
-    import pygame
 import argparse
-from checkers.constants import WIDTH, HEIGHT, SQUARE_SIZE, RED, WHITE
-from checkers.game import Game
+from checkers_game.constants import WIDTH, HEIGHT, SQUARE_SIZE, RED, WHITE
+from checkers_game.game import Game
 from minimax.algorithm import minimax
 from minimax.algorithm import alphabeta
 
@@ -49,7 +16,6 @@ pygame.display.set_caption('Checkers')
 # uncomment 36, comment 37 = minmax
 # comment 36, uncomment 37 = Alpha Beta
 # Line 93 in algorithm.py commented = no ai thinking shown
-#
 #
 
 def get_row_col_from_mouse(pos):

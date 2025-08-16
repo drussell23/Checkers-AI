@@ -1,6 +1,6 @@
 import pygame
 from .constants import RED, WHITE, BLUE, SQUARE_SIZE
-from checkers.board import Board 
+from .board import Board 
 from .piece import Piece
 from typing import Tuple, Dict, List, Optional
 

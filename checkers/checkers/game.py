@@ -1,30 +1,32 @@
 import pygame
 from .constants import RED, WHITE, BLUE, SQUARE_SIZE
 from checkers.board import Board 
+from .piece import Piece
+from typing import Tuple, Dict, List, Optional
 
 class Game:
-	def __init__(self, win):
+	def __init__(self, win: pygame.Surface) -> None:
 		self._init()
-		self.win = win
+		self.win: pygame.Surface = win
 
-	def update(self):
+	def update(self) -> None:
 		self.board.draw(self.win)
 		self.draw_valid_moves(self.valid_moves)
 		pygame.display.update()
 
-	def _init(self):
-		self.selected = None
-		self.board = Board()
-		self.turn = RED
-		self.valid_moves = {}
+	def _init(self) -> None:
+		self.selected: Optional[Piece] = None
+		self.board: Board = Board()
+		self.turn: Tuple[int, int, int] = RED
+		self.valid_moves: Dict[Tuple[int, int], List[Piece]] = {}
 
-	def winner(self):
+	def winner(self) -> Optional[Tuple[int, int, int]]:
 		return self.board.winner()
 
-	def reset(self):
+	def reset(self) -> None:
 		self._init()
 
-	def select(self, row, col):
+	def select(self, row: int, col: int) -> bool:
 		if self.selected:
 			result = self._move(row, col)
 			if not result:
@@ -39,7 +41,7 @@ class Game:
 
 		return False
 
-	def _move(self, row, col):
+	def _move(self, row: int, col: int) -> bool:
 		piece = self.board.get_piece(row, col)
 		if self.selected and piece == 0 and (row, col) in self.valid_moves:
 			self.board.move(self.selected, row, col)
@@ -52,23 +54,23 @@ class Game:
 
 		return True
 
-	def draw_valid_moves(self, moves):
+	def draw_valid_moves(self, moves: Dict[Tuple[int, int], List[Piece]]) -> None:
 		for move in moves:
 			row, col = move 
 			pygame.draw.circle(self.win, BLUE, (col * SQUARE_SIZE + SQUARE_SIZE // 2, row * SQUARE_SIZE + SQUARE_SIZE // 2), 15)
 
-	def change_turn(self):
+	def change_turn(self) -> None:
 		self.valid_moves = {}
 		if self.turn == RED:
 			self.turn = WHITE
 		else:
 			self.turn = RED
 
-	def get_board(self):
+	def get_board(self) -> Board:
 		return self.board
 
 
-	def ai_move(self, board):
+	def ai_move(self, board: Board) -> None:
 		self.board = board
 		self.change_turn()
 

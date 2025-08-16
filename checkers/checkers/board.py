@@ -1,21 +1,24 @@
 import pygame
 from .constants import BLACK, ROWS, RED, SQUARE_SIZE, COLS, WHITE
 from .piece import Piece
+from typing import List, Tuple, Dict, Optional
 
 class Board:
-    def __init__(self):
-        self.board = []
-        self.red_left = self.white_left = 12
-        self.red_kings = self.white_kings = 0
+    def __init__(self) -> None:
+        self.board: List[List[Piece | int]] = []
+        self.red_left: int = 12
+        self.white_left: int = 12
+        self.red_kings: int = 0
+        self.white_kings: int = 0
         self.create_board()
     
-    def draw_squares(self, win):
+    def draw_squares(self, win: pygame.Surface) -> None:
         win.fill(BLACK)
         for row in range(ROWS):
             for col in range(row % 2, COLS, 2):
                 pygame.draw.rect(win, RED, (row*SQUARE_SIZE, col *SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
 
-    def move(self, piece, row, col):
+    def move(self, piece: Piece, row: int, col: int) -> None:
         self.board[piece.row][piece.col], self.board[row][col] = self.board[row][col], self.board[piece.row][piece.col]
         piece.move(row, col)
 
@@ -26,14 +29,14 @@ class Board:
             else:
                 self.red_kings += 1 
 
-    def get_piece(self, row, col):
+    def get_piece(self, row: int, col: int) -> Piece | int:
         return self.board[row][col]
 
-    def evaluate(self):
+    def evaluate(self) -> float:
         return self.white_left - self.red_left + (self.white_kings * 1.5 - self.red_kings * 1.5)
         
 
-    def get_all_pieces(self, color):
+    def get_all_pieces(self, color: Tuple[int, int, int]) -> List[Piece]:
         pieces = []
         for row in self.board:
             for piece in row:
@@ -41,7 +44,7 @@ class Board:
                     pieces.append(piece)
         return pieces
 
-    def create_board(self):
+    def create_board(self) -> None:
         for row in range(ROWS):
             self.board.append([])
             for col in range(COLS):
@@ -55,7 +58,7 @@ class Board:
                 else:
                     self.board[row].append(0)
         
-    def draw(self, win):
+    def draw(self, win: pygame.Surface) -> None:
         self.draw_squares(win)
         for row in range(ROWS):
             for col in range(COLS):
@@ -63,8 +66,7 @@ class Board:
                 if piece != 0:
                     piece.draw(win)
 
-    def remove(self, pieces):
-
+    def remove(self, pieces: List[Piece]) -> None:
         for piece in pieces:
             self.board[piece.row][piece.col] = 0
             if piece != 0:
@@ -74,7 +76,7 @@ class Board:
                     self.white_left -= 1
     
 
-    def winner(self):
+    def winner(self) -> Optional[Tuple[int, int, int]]:
         if self.red_left <= 0:
             return WHITE
         elif self.white_left <= 0:
@@ -99,7 +101,7 @@ class Board:
         return WHITE
         
     
-    def get_valid_moves(self, piece):
+    def get_valid_moves(self, piece: Piece) -> Dict[Tuple[int, int], List[Piece]]:
         moves = {}
         left = piece.col - 1
         right = piece.col + 1
@@ -114,7 +116,7 @@ class Board:
     
         return moves
 
-    def _traverse_left(self, start, stop, step, color, left, skipped=[]):
+    def _traverse_left(self, start: int, stop: int, step: int, color: Tuple[int, int, int], left: int, skipped: List[Piece]=[]) -> Dict[Tuple[int, int], List[Piece]]:
         moves = {}
         last = []
         for r in range(start, stop, step):
@@ -147,7 +149,7 @@ class Board:
         
         return moves
 
-    def _traverse_right(self, start, stop, step, color, right, skipped=[]):
+    def _traverse_right(self, start: int, stop: int, step: int, color: Tuple[int, int, int], right: int, skipped: List[Piece]=[]) -> Dict[Tuple[int, int], List[Piece]]:
         moves = {}
         last = []
         for r in range(start, stop, step):

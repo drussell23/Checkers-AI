@@ -32,12 +32,40 @@ def main():
         print("usage: [main.py] [depth] [1 for AB 0 for MM]")
         sys.exit(1)
 
-    if int(args[1]) == 1:
-        AB = True
-    else:
-        AB = False
+    import pygame
+import argparse
+from checkers.constants import WIDTH, HEIGHT, SQUARE_SIZE, RED, WHITE
+from checkers.game import Game
+from minimax.algorithm import minimax
+from minimax.algorithm import alphabeta
 
-    DEPTH = int(args[0])
+FPS = 60
+ALPHA = float('-inf')
+BETA = float('inf')
+
+WIN = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption('Checkers')
+
+# uncomment 36, comment 37 = minmax
+# comment 36, uncomment 37 = Alpha Beta
+# Line 93 in algorithm.py commented = no ai thinking shown
+#
+#
+
+def get_row_col_from_mouse(pos):
+    x, y = pos
+    row = y // SQUARE_SIZE
+    col = x // SQUARE_SIZE
+    return row, col
+
+def main():
+    parser = argparse.ArgumentParser(description='Play checkers against an AI.')
+    parser.add_argument('depth', type=int, help='The search depth for the AI.')
+    parser.add_argument('algorithm', type=int, choices=[0, 1], help='The algorithm to use (0 for minimax, 1 for alpha-beta).')
+    args = parser.parse_args()
+
+    DEPTH = args.depth
+    AB = bool(args.algorithm)
 
     print(f'Initializing AI with depth {DEPTH}. Using AlphaBeta: {AB}')
 

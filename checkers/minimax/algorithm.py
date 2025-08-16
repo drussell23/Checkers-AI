@@ -1,10 +1,14 @@
 from copy import deepcopy
 import pygame
+from checkers.board import Board
+from checkers.piece import Piece
+from checkers.game import Game
+from typing import List, Tuple, Optional
 
 RED = (255,0,0)
 WHITE = (255, 255, 255)
 
-def minimax(position, depth, max_player, game):
+def minimax(position: Board, depth: int, max_player: bool, game: Game) -> Tuple[float, Optional[Board]]:
     if depth == 0 or position.winner() != None:
         return position.evaluate(), position
     
@@ -35,7 +39,7 @@ def minimax(position, depth, max_player, game):
         return minEval, best_move
 
     
-def alphabeta(position, depth, alpha, beta, max_player, game):
+def alphabeta(position: Board, depth: int, alpha: float, beta: float, max_player: bool, game: Game) -> Tuple[float, Optional[Board]]:
     if depth == 0 or position.winner() != None:
         return position.evaluate(), position
     
@@ -76,7 +80,7 @@ def alphabeta(position, depth, alpha, beta, max_player, game):
         return minEval, best_move
 
 
-def simulate_move(piece, move, board, game, skip):
+def simulate_move(piece: Piece, move: Tuple[int, int], board: Board, game: Game, skip: List[Piece]) -> Board:
     board.move(piece, move[0], move[1])
     if skip:
         board.remove(skip)
@@ -84,7 +88,7 @@ def simulate_move(piece, move, board, game, skip):
     return board
 
 
-def get_all_moves(board, color, game):
+def get_all_moves(board: Board, color: Tuple[int, int, int], game: Game) -> List[Board]:
     moves = []
 
     for piece in board.get_all_pieces(color):
@@ -99,7 +103,7 @@ def get_all_moves(board, color, game):
     return moves
 
 
-def draw_moves(game, board, piece):
+def draw_moves(game: Game, board: Board, piece: Piece) -> None:
     valid_moves = board.get_valid_moves(piece)
     board.draw(game.win)
     pygame.draw.circle(game.win, (0,255,0), (piece.x, piece.y), 50, 5)
